@@ -1,22 +1,24 @@
 import browser
 
-class Parser(object):
+class WebParser(object):
 
     url = ""
     db = None
+    log = None
+
+    config = dict()
+
+    test_flag = False
 
     def __init__(self):
         pass
 
-    # Maybe need to do something....
     def init(self, url):
-        print 'Super:init:' + url
+        pass
 
     def setBrowser(self, url):
         return browser.Mozilla50
 
     def parse( self, url, html ):
-        print "Super:Url:", url
-        print "Super:Html:", html 
         return True, []
         
