@@ -214,7 +214,6 @@ class Engine(object):
             try:
                 self.mongo_connect = MongoClient(self.config['backend']['host'])
                 self.mongo_connect.admin.authenticate(self.config['backend']['username'], self.config['backend']['password'])
-                self.parser_assign()
             except Exception, e:
                 self.log( 'E', 'Mongodb connect refuse' )
                 self.quit()
@@ -228,6 +227,7 @@ class Engine(object):
                     self.config['broker']['virtual_host'],
                     self.config['broker']['queue']
                     )
+            self.parser_assign()
             self.channel.basic_qos(prefetch_count=1)
             self.channel.basic_consume(self.consumer, queue=self.config['broker']['queue'])
             self.log( 'N' , 'Ready to Start')
