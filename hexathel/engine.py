@@ -208,14 +208,15 @@ class Engine(object):
 
         self.setEnvironment()
 
-        self.log( 'N', 'Connect to backend')
-        try:
-            self.mongo_connect = MongoClient(self.config['backend']['host'])
-            self.mongo_connect.admin.authenticate(self.config['backend']['username'], self.config['backend']['password'])
-            self.parser_assign()
-        except Exception, e:
-            self.log( 'E', 'Mongodb connect refuse' )
-            self.quit()
+        if( self.config['backend']['use'] == '1' ):
+            self.log( 'N', 'Connect to backend')
+            try:
+                self.mongo_connect = MongoClient(self.config['backend']['host'])
+                self.mongo_connect.admin.authenticate(self.config['backend']['username'], self.config['backend']['password'])
+                self.parser_assign()
+            except Exception, e:
+                self.log( 'E', 'Mongodb connect refuse' )
+                self.quit()
 
         self.log( "N", "Connect to broker")
         try:
