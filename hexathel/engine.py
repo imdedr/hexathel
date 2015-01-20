@@ -130,6 +130,7 @@ class Engine(object):
             self.parser_list[p].test_flag = self.test_flag
             self.parser_list[p].config = self.config['env']
             self.parser_list[p].log = self.log
+            self.parser_list[p].mq = self.channel
 
     def setEnvironment(self):
         sys.path.append( self.working_path )

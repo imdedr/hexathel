@@ -10,6 +10,8 @@ class WebParser(object):
 
     test_flag = False
 
+    mq = None
+
     def __init__(self):
         pass
 
