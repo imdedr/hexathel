@@ -19,7 +19,7 @@ class WebParser(object):
         pass
 
     def setBrowser(self, url):
-        return browser.Mozilla50
+        return browser.Mozilla50, {}
 
     def parse( self, url, html ):
         return True, []

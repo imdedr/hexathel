@@ -81,7 +81,9 @@ class Engine(object):
             self.sentry.captureMessage(msg)
 
     def getUrl( self, url, vals, headers ):
-        data = urllib.urlencode(vals)
+        data = urllib.urlencode(vals).replace('+', '')
+        if( vals != {} ):
+            headers['Content-Length'] = str(len(data))
         req = urllib2.Request(url, data, headers)
         response = urllib2.urlopen(req, timeout=5)
         return response.read()
@@ -154,18 +156,22 @@ class Engine(object):
         if ( parser_name != 0 ):
             # 取得對應的 Parser
 
-            # 呼叫 init (帶入當前網址)
-            self.parser_list[parser_name].init( str(body.encode('utf-8')) )
+            # 如果是 content:// 開頭, 代表是資料轉換, 不執行Download
+            if( target_url.find('content://') == -1 ):
+                # 呼叫 init (帶入當前網址)
+                self.parser_list[parser_name].init( str(body.encode('utf-8')) )
 
-            # 呼叫 setBrowser (設定瀏覽器參數)
-            browser_headers = self.parser_list[parser_name].setBrowser( str(body.encode('utf-8')) )
-            # 下載網頁資訊
-            try:
-                page_html = self.getUrl( target_url, {}, browser_headers)
-            except:
-                self.log( "E", "Network Error:" + body )
-                ch.basic_ack(delivery_tag = method.delivery_tag)
-                return
+                # 呼叫 setBrowser (設定瀏覽器參數)
+                browser_headers, browser_vals = self.parser_list[parser_name].setBrowser( str(body.encode('utf-8')) )
+                # 下載網頁資訊
+                try:
+                    page_html = self.getUrl( target_url, browser_vals, browser_headers)
+                except:
+                    self.log( "E", "Network Error:" + body )
+                    ch.basic_ack(delivery_tag = method.delivery_tag)
+                    return
+            else:
+                page_html = str(body.encode('utf-8')).replace('content://', '')
 
             # 呼叫 Parser 方法
             try:
