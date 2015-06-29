@@ -39,7 +39,10 @@ def execute():
     def getUrl( url, vals = {} ):
         data = urllib.urlencode(vals)
         headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36' }
-        req = urllib2.Request(url, data, headers)
+        if( vals == {} ):
+            req = urllib2.Request(url=url, headers=headers)
+        else:
+            req = urllib2.Request(url, data, headers)
         response = urllib2.urlopen(req)
         return response.read()
 

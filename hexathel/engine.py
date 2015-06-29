@@ -84,7 +84,10 @@ class Engine(object):
         data = urllib.urlencode(vals).replace('+', '')
         if( vals != {} ):
             headers['Content-Length'] = str(len(data))
-        req = urllib2.Request(url, data, headers)
+        if( vals == {}  ):
+            req = urllib2.Request(url=url, headers=headers)
+        else:
+            req = urllib2.Request(url, data, headers)
         response = urllib2.urlopen(req, timeout=5)
         return response.read()
 
