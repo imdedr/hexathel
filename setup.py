@@ -5,12 +5,12 @@ from distutils.core import setup
 
 data_files = []
 for dirpath, dirnames, filenames in os.walk('hexathel'):
-    # ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
         if dirname.startswith("."):
             del dirnames[i]
-    if "__init__.py" in filenames:
-        data_files.append(".".join(fullsplit(dirpath)))
+    for f in dirnames:
+       data_files.append(os.path.join(dirpath, f))
+
 
 setup(
     name = 'hexathel',
