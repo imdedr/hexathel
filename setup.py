@@ -3,10 +3,18 @@ from os.path import join
 
 from distutils.core import setup
 
-data_files = []
-for dirpath, dirnames, filenames in os.walk('hexathel'):
-    for f in filenames:
-       data_files.append(os.path.join(dirpath, f))
+
+def listfiles( basepath ):
+    l = []
+    for filenames in os.listdir(basepath):
+        path = os.path.join( basepath, filenames)
+        if os.path.isfile(path):
+            l.append( path )
+    return l
+
+os.chmod('wrapper/hexathel', 0o755)
+os.chmod('wrapper/hexathel-shell', 0o755)
+os.chmod('wrapper/hexathel-artisan', 0o755)
 
 setup(
     name = 'hexathel',
@@ -28,7 +36,9 @@ setup(
         'setproctitle'
     ],
     data_files=[
-        ('/usr/local/hexathel', data_files),
+        ('/usr/local/hexathel', listfiles('hexathel')),
+        ('/usr/local/hexathel/helper', listfiles('hexathel/helper')),
+        ('/usr/local/hexathel/template', listfiles('hexathel/template')),
         ('/usr/bin', [join('wrapper', _) for _ in os.listdir('wrapper') if _[-1] != '~'])
     ]
 )
