@@ -5,12 +5,8 @@ from distutils.core import setup
 
 data_files = []
 for dirpath, dirnames, filenames in os.walk('hexathel'):
-    for i, dirname in enumerate(dirnames):
-        if dirname.startswith("."):
-            del dirnames[i]
-    for f in dirnames:
+    for f in filenames:
        data_files.append(os.path.join(dirpath, f))
-
 
 setup(
     name = 'hexathel',
