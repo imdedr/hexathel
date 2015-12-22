@@ -3,6 +3,15 @@ from os.path import join
 
 from distutils.core import setup
 
+data_files = []
+for dirpath, dirnames, filenames in os.walk('hexathel'):
+    # ignore dirnames that start with '.'
+    for i, dirname in enumerate(dirnames):
+        if dirname.startswith("."):
+            del dirnames[i]
+    if "__init__.py" in filenames:
+        data_files.append(".".join(fullsplit(dirpath)))
+
 setup(
     name = 'hexathel',
     version = '1.0',
@@ -23,7 +32,7 @@ setup(
         'setproctitle'
     ],
     data_files=[
-        ('/usr/local/hexathel', [join('hexathel', _) for _ in os.listdir('hexathel') if _[-1] != '~']),
+        ('/usr/local/hexathel', data_files),
         ('/usr/bin', [join('wrapper', _) for _ in os.listdir('wrapper') if _[-1] != '~'])
     ]
 )
