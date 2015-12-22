@@ -1,5 +1,6 @@
 import os
- 
+from os.path import join
+
 from distutils.core import setup
 
 setup(
@@ -22,7 +23,7 @@ setup(
         'setproctitle'
     ],
     data_files=[
-        ('/usr/local/', 'hexathel'),
-        ('/usr/bin/', 'wrapper/*')
+        ('/usr/local/hexathel', [join('hexathel', _) for _ in os.listdir('hexathel') if _[-1] != '~']),
+        ('/usr/bin', [join('wrapper', _) for _ in os.listdir('wrapper') if _[-1] != '~'])
     ]
 )
