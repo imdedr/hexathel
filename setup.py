@@ -22,7 +22,7 @@ setup(
         'setproctitle'
     ],
     data_files=[
-        ('hexathel', '/usr/local/'),
-        ('wrapper/*', '/usr/bin/')
+        ('/usr/local/', 'hexathel'),
+        ('/usr/bin/', 'wrapper/*')
     ]
 )
